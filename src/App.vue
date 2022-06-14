@@ -1,17 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- <img alt="Vue logo" src="./assets/logo.png" />
+  <HelloWorld msg="hello" /> -->
+  <Composition />
+  <!-- <Composition1 /> -->
+  <CompLife />
+  <!-- <CompWatch /> -->
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import HelloWorld from "./components/HelloWorld.vue";
+import Composition from "./components/Composition.vue";
+// import Composition1 from "./components/Composition1.vue";
+// import CompLife from "./components/CompLife.vue";
+// import CompWatch from "./components/CompWatch.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // HelloWorld,
+    Composition,
+    // Composition1,
+    // CompLife,
+    // CompWatch,
+  },
+};
 </script>
 
 <style>
