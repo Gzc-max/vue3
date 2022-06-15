@@ -17,7 +17,7 @@ export default {
     }
     onMounted(() => {
       console.log("onMounted");
-      number.value = 2;
+      // number.value = 2;
     });
 
     onUpdated(() => {

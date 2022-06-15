@@ -7,7 +7,7 @@
 </template>
 
 <script>
-// import { reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 export default {
   name: "CompositionItem",
   // 未响应式数据
@@ -16,18 +16,17 @@ export default {
     console.log("context", context);
     console.log("this", this);
 
-    const title = "";
-    const list = [
+    const title = ref("");
+    const list = reactive([
       { id: 0, name: "Tom" },
       { id: 1, name: "Joy" },
       { id: 2, name: "Ming" },
-    ];
+    ]);
 
     function changeText() {
       console.log(title);
       const tmp = { id: list.length + 1, name: title.value };
-      title.value = "";
-
+      // title.value = "";
       list.push(tmp);
     }
     return { title, list, changeText };

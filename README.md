@@ -18,13 +18,13 @@ vue3 相比 vue2 所有的源码都是用 ts 书写:
 - Composition API : 组合 API(类似 React hooks)
 - Better Ts support : 更好的 Ts 支持
 - Custom Renderer API : 暴露自定义渲染 API
-- Fragment, Teleport(Protal), Surspense: 更先进的组件
+- Fragment, Teleport(Protal), Surspense: 高阶组件
 
 ## 2.vue3.x 是如何变快的？
 
 https://vue-next-template-explorer.netlify.app/
 
-- diff 算法优化
+- 1.diff 算法优化
   - vue2 中的虚拟 dom 是进行全量的对比
   - vue3 中新增了静态标记（PatchFlag）, 在与上次虚拟节点进行对比的时候，只对比带有 patchflag 的节点，
     并且可以通过 flag 的信息得知当前节点要对比的具体内容
@@ -75,11 +75,11 @@ export const enum PatchFlags {
 
 ```
 
-- hoistStatic 静态提升
+- 2.hoistStatic 静态提升
 - vue2 中无论元素是否参与更新，每次都会重新创建，然后再渲染
 - vue3 中对于不参与更新的元素，会做静态提升，只会被创建一次，再渲染时直接复用即可
 
-- cacheHandles 事件监听缓存
+- 3.cacheHandles 事件监听缓存
 - 默认情况下 onClick 会被视为动态绑定，所以每次都会去追踪它的变化，但是因为是同一个函数，所以
   没有追踪变化，直接缓存起来复用即可
 
@@ -101,7 +101,14 @@ export const enum PatchFlags {
   其实说白了，Tree-shaking 本质并不是 Vue3 的东西，而是那些打包工具的功能。只是 Vue3 代码结构调整，当用 webpack 等打包工具打包项目时，webpack 会将那些没用用到的代码不打包到最后的项目中，这样使得项目体积更小
   主要原理：依赖 es6 的模块化的语法，将无用的代码(dead-code)进行剔除!
 
-## Composition API（组合）
+- 我们知道 ES6 语法中 import 在浏览器中完全可用。可以用于加载后端资源.Vite 正是利用这个特性，只不过又更进一步，提供了对于 vue 文件的支持。
+
+  - 简易 Http 服务器
+  - 无需 webpack
+  - Vue 文件直接渲染
+  - 热更新
+
+## Composition API（组合 API）
 
 - CompositionAPI 被如果只是字面的意思可以被翻译成组合 API。本质上 CompositionAPI 就是为了更为方便的实现逻辑的组合而生的。
 - 组件小的时候，用不同的 Options 比如 methods、compute、data、props 等这样分类比较清晰。大型组件中，大量的 Options 聚在一起。同一个组件可能有多个逻辑关注点，当使用 Options API 时，每一个关注点都有自己的 Options，当修改一个逻辑关注点时，就要在一个文件不断地切换和寻找。
@@ -142,11 +149,10 @@ setup(){
 ```
 
 - 引入新的 API
+- reactive 是 vue3 提供的一个函数，可以对对象和数组这种复合数据类型进行包装，会返回一个新的对象，该对象可以实现响应式。
+- ref 可以对基本数据类型进行包装，会返回一个新的对象，该对象可以实现响应式。
 
-  1. // reactive 是 vue3 提供的一个函数，可以对对象和数组这种复合数据类型进行包装，会返回一个新的对象，该对象可以实现响应式。
-  2. // ref 可以对基本数据类型进行包装，会返回一个新的对象，该对象可以实现响应式。
-
-  // 需要注意
+需要注意
   ref 底层也是使用 reactive 进行包装 {reactive({value:12})}
   所以我们在 setup 函数里面操作 ref 对象的时候，需要使用.value 方式
   视图是不需要使用.value 原因是视图会判断 当前值是 ref 还是 reactive, 如果是 ref 则会自动的获取 value 值
@@ -173,8 +179,6 @@ onUnmounted,
 ## 生命周期函数
 
 https://www.cnblogs.com/js-liqian/p/11890209.html
-
-- 生命周期函数需要在 setup 里面注册使用
 
 ```
 onMouted(()=>{
@@ -300,3 +304,5 @@ arrProxy[1]  //getting 1!
 第二个参数是一个配置对象 handler，对于每一个被代理的操作，需要提供一个对应的处理函数，该函数将拦截对应的操作。比如，上面代码中，配置对象有一个 get 方法，用来拦截对目标对象属性的访问请求。get 方法的两个参数分别是目标对象和所要访问的属性。
 
 https://es6.ruanyifeng.com/#docs/proxy
+
+https://github.com/Gzc-max/vue3.git

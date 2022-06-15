@@ -12,7 +12,10 @@ import changeTextFn from "../composition/changeText";
 
 export default {
   name: "CompositionItem1",
-  setup() {
+  setup(props, context) {
+    console.log('props', props)
+    console.log('context', context)
+
     const list = handleList();
     const { title, changeText } = changeTextFn(list);
     return {
